@@ -1,0 +1,8 @@
+{
+  "sections": {
+    "product-card": {
+      "type": "product-card-custom"
+    }
+  },
+  "order": ["product-card"]
+}
