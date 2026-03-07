@@ -1,0 +1,57 @@
+
+{%assign products_section = section.settings.product %}
+{%assign product_options = products_section.options_with_values %}
+
+
+
+<section>
+    <main>
+        <div class="product-card-container">
+            <div class="product">
+            
+            <h1>{{products_section.title}}</h1>
+            <img src="{{products_section.featured_image |  image_url: width: 100}}" alt="{{products_section.featured_image.alt}}">
+
+            <div class="options-container">
+                {%for options in product_options%}
+                   {{options.name}}
+
+                    <select id="{{options.name |  handleize}}">
+                        {%for option-values in options.values%}
+                            <option value="{{option-values.name}}">{{option-values.name}}</option>
+                         {%endfor %}
+                    </select>
+                    <br>
+                {% endfor %}
+                </div>
+
+                <div data-json="{{products_section.variants |json}}">
+
+                </div>
+
+             
+
+            <div class="button-add-cart">
+                <button>Adicionar ao carrinho</button>
+
+            </div>
+        </div>
+    </main>
+</section>
+
+
+{% schema %}
+{
+    "name": "product-card",
+    "settings": [
+        {
+            "type": "product",
+            "id": "product",
+            "label": "Produto"
+        }
+    ]
+        
+      
+        
+}
+{% endschema %}
