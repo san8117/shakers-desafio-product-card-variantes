@@ -1,33 +1,48 @@
+{% assign product_section = section.settings.product %}
+{% assign product_variants_available = product_section.selected_or_first_available_variant%}
+{% assign product_options = product_section.options_with_values %}
 
-{%assign products_section = section.settings.product %}
-{%assign product_options = products_section.options_with_values %}
 
 
 
 <section>
     <main>
-        <div class="product-card-container">
+        <div class="product-card-container " data-id="{{product_section.id}}">
             <div class="product">
+               
+            <img src="{{product_section.featured_image |  image_url: width: 100}}" alt="{{product_section.featured_image.alt}}">
+            <h1>{{product_section.title}}</h1>
             
-            <h1>{{products_section.title}}</h1>
-            <img src="{{products_section.featured_image |  image_url: width: 100}}" alt="{{products_section.featured_image.alt}}">
+            
+            <section class="product-price" data-price>
+                {%if product_variants_available != blank %}
+                    {{product_variants_avaible.price |  money}}
+                {% endif %}
+            </section>
+
+
+            </div>
+
 
             <div class="options-container">
-                {%for options in product_options%}
-                   {{options.name}}
+                  {%for options in product_options%}
+                    <h3>{{options.name}}:</h3>
 
                     <select id="{{options.name |  handleize}}">
-                        {%for option-values in options.values%}
-                            <option value="{{option-values.name}}">{{option-values.name}}</option>
-                         {%endfor %}
-                    </select>
-                    <br>
+                        {%for product_values in options.values%}
+
+                            <option value="{{product_values}}">{{product_values}}</option>
+                        {% endfor %}
+                        </select>
+
+                         
                 {% endfor %}
-                </div>
 
-                <div data-json="{{products_section.variants |json}}">
-
-                </div>
+                 {%for price_variants in product.variants%} 
+                    {{price_variants.price | money}}
+                 {% endfor %}
+                <div data-json='{{product.variants | json}}'></div>
+            </div>
 
              
 
