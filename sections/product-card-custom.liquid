@@ -1,67 +1,51 @@
 {% assign product_section = section.settings.product %}
-{% assign product_variants_available = product_section.selected_or_first_available_variant%}
+{% assign product_variants_available = product_section.selected_or_first_available_variant %}
 {% assign product_options = product_section.options_with_values %}
 
-
-
-
 <section>
-    <main>
-        <div class="product-card-container " data-id="{{product_section.id}}">
-            <div class="product">
-               
-            <img src="{{product_section.featured_image |  image_url: width: 100}}" alt="{{product_section.featured_image.alt}}">
-            <h1>{{product_section.title}}</h1>
-            
-            
-            <section class="product-price" data-price>
-                {%if product_variants_available != blank %}
-                   <p>{{product_variants_available.price | money}}</p>
-                {% endif %}
-            </section>
+  <main>
+    <div data-json='{{product_section.variants | json}}'></div>
+    <div class="product-card-container " data-id='{{product_section.id}}'>
+      <div class="product">
+        <img
+          src="{{product_section.featured_image |  image_url: width: 100}}"
+          alt="{{product_section.featured_image.alt}}"
+        >
+        <h1>{{ product_section.title }}</h1>
 
+        {% if product_variants_available != blank %}
+          <p data-price>{{ product_variants_available.price | money }}</p>
+        {% endif %}
+      </div>
 
-            </div>
+      <div class="options-container">
+        {% for options in product_options %}
+          <h3>{{ options.name }}:</h3>
 
+          <select id="{{options.name |  handleize}}">
+            {% for product_values in options.values %}
+              <option value='{{product_values}}'>{{ product_values }}</option>
+            {% endfor %}
+          </select>
+        {% endfor %}
+      </div>
 
-            <div class="options-container">
-                  {%for options in product_options%}
-                    <h3>{{options.name}}:</h3>
-
-                    <select id="{{options.name |  handleize}}">
-                        {%for product_values in options.values%}
-
-                            <option value="{{product_values}}">{{product_values}}</option>
-                        {% endfor %}
-                        </select>
-
-                         
-                {% endfor %}
-            </div>
-
-             
-
-            <div class="button-add-cart">
-                <button data-btn-add-card >Adicionar ao carrinho</button>
-
-            </div>
-        </div>
-    </main>
+      <div class="button-add-cart">
+        <button data-btn-add-card>Adicionar ao carrinho</button>
+      </div>
+    </div>
+  </main>
 </section>
-
 
 {% schema %}
 {
-    "name": "product-card",
-    "settings": [
-        {
-            "type": "product",
-            "id": "product",
-            "label": "Produto"
-        }
-    ]
-        
-      
-        
+  "name": "product-card",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Produto"
+    }
+  ]
 }
 {% endschema %}
