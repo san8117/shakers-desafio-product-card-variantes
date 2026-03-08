@@ -16,7 +16,7 @@
             
             <section class="product-price" data-price>
                 {%if product_variants_available != blank %}
-                    {{product_variants_avaible.price |  money}}
+                   <p>{{product_variants_available.price | money}}</p>
                 {% endif %}
             </section>
 
@@ -37,17 +37,12 @@
 
                          
                 {% endfor %}
-
-                 {%for price_variants in product.variants%} 
-                    {{price_variants.price | money}}
-                 {% endfor %}
-                <div data-json='{{product.variants | json}}'></div>
             </div>
 
              
 
             <div class="button-add-cart">
-                <button>Adicionar ao carrinho</button>
+                <button data-btn-add-card >Adicionar ao carrinho</button>
 
             </div>
         </div>
