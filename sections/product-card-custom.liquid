@@ -1,20 +1,25 @@
 {% assign product_section = section.settings.product %}
 {% assign product_variants_available = product_section.selected_or_first_available_variant %}
 {% assign product_options = product_section.options_with_values %}
+{{'product-card.js' |  asset_url |  script_tag }}
+{{'product-card.css' |  asset_url |  stylesheet_tag }}
+
 
 <section>
   <main>
+    
+
     <div data-json='{{product_section.variants | json}}'></div>
     <div class="product-card-container " data-id='{{product_section.id}}'>
       <div class="product">
         <img
-          src="{{product_section.featured_image |  image_url: width: 100}}"
+          src="{{product_section.featured_image |  image_url: width: 180 , height: 180}}"
           alt="{{product_section.featured_image.alt}}"
         >
         <h1>{{ product_section.title }}</h1>
 
         {% if product_variants_available != blank %}
-          <p data-price>{{ product_variants_available.price | money }}</p>
+          <p data-price> Preço:{{ product_variants_available.price | money }}</p>
         {% endif %}
       </div>
 
