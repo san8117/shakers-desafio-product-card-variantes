@@ -29,14 +29,14 @@
 
           <select id="{{options.name |  handleize}}">
             {% for product_values in options.values %}
-              <option value='{{product_values}}'>{{ product_values }}</option>
+              <option value="{{product_values}}">{{ product_values }}</option>
             {% endfor %}
           </select>
         {% endfor %}
       </div>
 
       <div class="button-add-cart">
-        <button data-btn-add-card>Adicionar ao carrinho</button>
+        <button data-btn-add-cart>Adicionar ao carrinho</button>
       </div>
     </div>
   </main>

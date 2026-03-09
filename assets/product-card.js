@@ -1,63 +1,89 @@
-let sizeProduct, colorProduct;
-const buttonAddCart = document.querySelector('[data-btn-add-cart]')
-
 document.addEventListener('DOMContentLoaded', () => {
-    const dataJson = document.querySelector('div[data-json]');
-    const json = dataJson.getAttribute('data-json');
-    console.log(JSON.parse(json));
-    let variantId = json.id;
-    console.log(variantId)
+    const dataJson = document.querySelector("[data-json]");
+    const variants = JSON.parse(dataJson.getAttribute("data-json"));
+    const select = document.querySelectorAll("select");
+    const elementPrice = document.querySelector("[data-price]");
+    const buttonCart = document.querySelector("[data-btn-add-cart]");
+    let corProduct = null;
+    let sizeProduct = null;
+    let idVariant = null;
 
-})
+    select.forEach(select => {
+        select.addEventListener("change", (e) => {
+            const optionName = e.target.id;
+            const value = e.target.value;
 
-const optionSelected = document.querySelectorAll('select');
+            if (optionName === "cor") {
+                corProduct = value;
+            }
 
-optionSelected.forEach(optionSelected => {
+            if (optionName === "tamanho") {
+                sizeProduct = value;
+            }
 
-    optionSelected.addEventListener('change', (e) => {
-        console.log(optionSelected.id)
-    })
+            updateVariant();
 
-    if (optionSelected == "tamanho") {
-        sizeProduct = e.target.value;
-    }
-    if (optionSelected == "cor") {
-        colorProduct = e.target.value;
-    }
-
-    console.log(colorProduct, sizeProduct);
-
-    json.forEach(json => {
-        if (json.option1 == colorProduct && json.option2 == sizeProduct) {
-            console.log(json)
-        }
-    });
-})
-
-
-function addCart() {
-    let formData = {
-        'items': [{
-            'id': 7114244980785,
-            'quantity': 1
-        }]
-    };
-
-    fetch(window.Shopify.routes.root + 'cart/add.js', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-    })
-        .then(response => {
-            return response.json();
-        })
-        .catch((error) => {
-            console.error('Error:', error);
         });
+    });
 
-        buttonAddCart.addEventListener('click', addCart);
-}
+    function updateVariant() {
+        const variant = variants.find(v =>
+            v.option1 === corProduct &&
+            v.option2 === sizeProduct
+
+        );
+
+        if (variant) {
+            idVariant = variant.id;
+
+            if (elementPrice) {
+                elementPrice.textContent = "R$" + (variant.price / 100).toFixed(2);
+
+            }
+            console.log("Variante Selecionada:", variant)
+        }
+    }
+
+    buttonCart.addEventListener("click", addCart);
+
+    async function addCart() {
+        if (!idVariant) {
+            alert("Selecione as opções do produto");
+            return;
+        }
+
+        const formData = {
+            items: [
+                {
+                    id: idVariant,
+                    quantity: 1
+                }
+            ]
+        };
+
+        try {
+            
+            const response = await fetch(window.Shopify.routes.root + 'cart/add.js', {
+
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            }
+            );
+
+            const data = await response.json();
+            console.log("Produto adicionado ao carrinho!", data);
+
+
+        } catch (error) {
+            console.error("Erro ao adicionar ao carrinho", error);
+        }
+
+
+    }
+});
+
 
 
