@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const select = document.querySelectorAll("select");
     const elementPrice = document.querySelector("[data-price]");
     const buttonCart = document.querySelector("[data-btn-add-cart]");
-    let corProduct = null;
+    let colorProduct = null;
     let sizeProduct = null;
     let idVariant = null;
 
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const value = e.target.value;
 
             if (optionName === "cor") {
-                corProduct = value;
+                colorProduct = value;
             }
 
             if (optionName === "tamanho") {
@@ -28,26 +28,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateVariant() {
         const variant = variants.find(v =>
-            v.option1 === corProduct &&
+            v.option1 === colorProduct &&
             v.option2 === sizeProduct
 
         );
 
         if (variant) {
             idVariant = variant.id;
+           
 
             if (elementPrice) {
                 elementPrice.textContent = "R$" + (variant.price / 100).toFixed(2);
 
             }
-            console.log("Variante Selecionada:", variant)
+            console.log("Variante Selecionada:", variant);
         }
     }
 
     buttonCart.addEventListener("click", addCart);
 
     async function addCart() {
-     
+
 
         const formData = {
             items: [
@@ -59,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            
+
             const response = await fetch(window.Shopify.routes.root + 'cart/add.js', {
 
                 method: 'POST',
