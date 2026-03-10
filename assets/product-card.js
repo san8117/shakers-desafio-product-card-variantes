@@ -48,8 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function addCart() {
         if (!idVariant) {
-            alert("Selecione as opções do produto");
-            return;
+           
         }
 
         const formData = {
