@@ -47,9 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     buttonCart.addEventListener("click", addCart);
 
     async function addCart() {
-        if (!idVariant) {
-           
-        }
+     
 
         const formData = {
             items: [
